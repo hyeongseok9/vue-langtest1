@@ -2,11 +2,10 @@
     <div >
         <p>Hello World</p>
         <svg >
-            <D3Axis :scale="axisScale"
-                 orient="left"/>
-        </svg >
-        <svg >
-            <D3Axis :scale="axisScale"
+            <D3Axis :scale="axisYScale"
+                 orient="right"/>
+        
+            <D3Axis :scale="axisXScale"
                  orient="bottom"/>
         </svg>
         <svg >
@@ -45,6 +44,16 @@ export default {
                 .domain([0, 100])
                 .range([0, this.dimensions.width || 500])
         },
+        axisXScale() {
+            return scaleLinear()
+                .domain([0, 100])
+                .range([0, this.dimensions.width || 500])
+        },
+        axisYScale() {
+            return scaleLinear()
+                .domain([0, 200])
+                .range([this.dimensions.height || 500, 0])
+        },
     }
 
 }
@@ -56,6 +65,6 @@ svg {
     width:100%;
     height:100%;
     overflow:visible;
-    padding: 0 0 0 1em;
+    padding: 0 0 0 2em;
 }
 </style>

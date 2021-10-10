@@ -21,7 +21,7 @@
         <text fill="currentColor" y="9" dy="0.71em">2012</text>
     </g>
 </g>-->
-<g  fill="none" font-size="10" font-family="sans-serif" text-anchor="middle">
+<g  fill="none" font-size="10" font-family="sans-serif" text-anchor="middle" :transform="transformA">
   <path class="domain" stroke="currentColor" v-bind:[lineAttrKey]="lineAttrVal" :d="lined"></path>
   <g class="scale-ticks"
      :class="[position]">
@@ -108,12 +108,15 @@ export default {
             var range0 = range[0] + offset,
                 range1 = range[range.length - 1] + offset,
                 position = (scale.bandwidth ? this.center : this.number)(scale.copy(), offset);
-
+console.log("range0:"+range0)
+console.log("range1:"+range1)
             var lineAttrKey = x + "2", 
                 lineAttrVal = k * tickSizeInner,
                 textSpacingVal = k * spacing,
                 textDy = this.orient === 'top' ? "0em" : this.orient === 'bottom' ? "0.71em" : "0.32em";
-
+        var transformA = this.orient === 'bottom' ? "translate(0, "+range1+")": 
+            this.orient === 'right'? "translate("+range0+", 0)":"";
+console.log("orient:"+this.orient+"transformA:"+transformA)        
         var ret= {tickArguments,
                 tickValues,
                 tickFormat,
@@ -134,7 +137,8 @@ export default {
                 lineAttrKey,
                 lineAttrVal,
                 textSpacingVal,
-                textDy};
+                textDy,
+                transformA};
         
         return ret
     },
@@ -150,7 +154,6 @@ export default {
             return this.scale.ticks(this.count).map(v => {
                 const s = this.scale(v)
                 const p = this.orient
-                console.log("<---ticks--> origin: "+p);
 
                 // Pixel values
                 const x = p === 'left' || p === 'right' ? 0 : s
@@ -180,6 +183,11 @@ export default {
                 value: v
                 }
             })
+        }
+    },
+    watch:{
+        orient: (val) => {
+            this.$forceUpdate()
         }
     }
 
