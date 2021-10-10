@@ -84,10 +84,9 @@ export default {
             offset = Math.max(0, scale.bandwidth() - offset * 2) / 2;
             if (scale.round()) offset = Math.round(offset);
             return d => +scale(d) + offset;
-        }
-    },
-    data(){
-        var tickArguments = [],
+        },
+        calcPosition(){
+            var tickArguments = [],
                 tickValues = null,
                 tickFormat = null,
                 tickSizeInner = 6,
@@ -108,16 +107,13 @@ export default {
             var range0 = range[0] + offset,
                 range1 = range[range.length - 1] + offset,
                 position = (scale.bandwidth ? this.center : this.number)(scale.copy(), offset);
-console.log("range0:"+range0)
-console.log("range1:"+range1)
             var lineAttrKey = x + "2", 
                 lineAttrVal = k * tickSizeInner,
                 textSpacingVal = k * spacing,
                 textDy = this.orient === 'top' ? "0em" : this.orient === 'bottom' ? "0.71em" : "0.32em";
-        var transformA = this.orient === 'bottom' ? "translate(0, "+range1+")": 
-            this.orient === 'right'? "translate("+range0+", 0)":"";
-console.log("orient:"+this.orient+"transformA:"+transformA)        
-        var ret= {tickArguments,
+            var transformA = this.orient === 'bottom' ? "translate(0, "+range1+")": 
+                this.orient === 'right'? "translate("+range0+", 0)":"";
+            var ret= {tickArguments,
                 tickValues,
                 tickFormat,
                 tickSizeInner,
@@ -139,8 +135,12 @@ console.log("orient:"+this.orient+"transformA:"+transformA)
                 textSpacingVal,
                 textDy,
                 transformA};
+            return ret;
+        }
+    },
+    data(){
         
-        return ret
+        return this.calcPosition();
     },
     computed:{
         lined(){
@@ -186,8 +186,30 @@ console.log("orient:"+this.orient+"transformA:"+transformA)
         }
     },
     watch:{
-        orient: (val) => {
-            this.$forceUpdate()
+        orient: function(val, oldVal) {
+            var ret = this.calcPosition();
+            this.tickArguments = ret.tickArguments;
+            this.tickValues = ret.tickValues;
+            this.tickFormat = ret.tickFormat;
+            this.tickSizeInner = ret.tickSizeInner;
+            this.tickSizeOuter = ret.tickSizeOuter;
+            this.tickPadding = ret.tickPadding;
+            this.offset = ret.offset;
+            this.k = ret.k;
+            this.x = ret.x;
+            this.transform = ret.transform;
+            this.values = ret.values;
+            this.format = ret.format;
+            this.spacing = ret.spacing;
+            this.range = ret.range;
+            this.range0 = ret.range0;
+            this.range1 = ret.range1;
+            this.position = ret.position;
+            this.lineAttrKey = ret.lineAttrKey;
+            this.lineAttrVal = ret.lineAttrVal;
+            this.textSpacingVal = ret.textSpacingVal;
+            this.textDy = ret.textDy;
+            this.transformA = ret.transformA;
         }
     }
 
