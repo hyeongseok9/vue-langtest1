@@ -97,7 +97,7 @@ export default {
                 x = this.orient === 'left' || this.orient === 'right' ? "x" : "y",
                 transform = this.orient === 'top' || this.orient === 'bottom' ? this.translateX : this.translateY;
 
-            var scale = this.scale;
+            var scale = this.scale.copy();
 
             var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
                 format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : this.identity) : tickFormat,

@@ -2,20 +2,23 @@
     <div >
         <p>Hello World</p>
         <svg >
+            
             <D3Axis :scale="axisYScale"
-                 orient="right"/>
-        
+                 orient="left"/>
+            <path :d="_d"></path>
             <D3Axis :scale="axisXScale"
                  orient="bottom"/>
+
+            <D3Line :scaleX="axisXScale" :scaleY="axisYScale" :dataset="sample"/>
         </svg>
-        <svg >
-            <D3AxisSample />
-        </svg>
+        
     </div>
 </template>
 
 <script>
+
 import D3Axis from './vue-d3/D3Axis'
+import D3Line from './vue-d3/D3Line'
 import D3AxisSample from './vue-d3/D3AxisSample'
 import {
   scaleLinear,
@@ -28,6 +31,7 @@ import {
 export default {
     components:{
         D3Axis,
+        D3Line,
         D3AxisSample,
     },
     data(){
@@ -35,7 +39,8 @@ export default {
             dimensions: {
                 width:  0,
                 height: 0
-            }
+            },
+            sample:[[10, 10], [20, 20], [30, 90], [40, 110], [50, 130], [60, 150]]
         }
     },
     computed:{
@@ -53,10 +58,10 @@ export default {
             return scaleLinear()
                 .domain([0, 200])
                 .range([this.dimensions.height || 500, 0])
-        },
-    }
-
+        }
+    }    
 }
+
 </script>
 
 <style scoped>
@@ -66,5 +71,10 @@ svg {
     height:100%;
     overflow:visible;
     padding: 0 0 0 2em;
+}
+
+path {
+  fill: none;
+  stroke: #000;
 }
 </style>
