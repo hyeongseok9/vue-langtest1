@@ -5,11 +5,11 @@
             
             <D3Axis :scale="axisYScale"
                  orient="left"/>
-            <path :d="_d"></path>
             <D3Axis :scale="axisXScale"
                  orient="bottom"/>
 
-            <D3Line :scaleX="axisXScale" :scaleY="axisYScale" :dataset="sample"/>
+            <D3Heatmap :scaleX="axisXScale" :scaleY="axisYScale" 
+            :dataset="sample" :blockWidth="10" :blockHeight="10"/>
         </svg>
         
     </div>
@@ -18,8 +18,8 @@
 <script>
 
 import D3Axis from './vue-d3/D3Axis'
-import D3Line from './vue-d3/D3Line'
-import D3AxisSample from './vue-d3/D3AxisSample'
+import D3Heatmap from './vue-d3/D3Heatmap'
+
 import {
   scaleLinear,
   scaleTime,
@@ -31,8 +31,7 @@ import {
 export default {
     components:{
         D3Axis,
-        D3Line,
-        D3AxisSample,
+        D3Heatmap,
     },
     data(){
         return {
@@ -40,7 +39,7 @@ export default {
                 width:  0,
                 height: 0
             },
-            sample:[[10, 10], [20, 20], [30, 90], [40, 110], [50, 130], [60, 150],[70, 130]]
+            sample:[[10, 10, 1], [20, 20, 45], [30, 90,34], [40, 110,33], [50, 130,64], [60, 150,43],[70, 130,87]]
         }
     },
     computed:{
